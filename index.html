@@ -1,4 +1,4 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -1011,6 +1011,8 @@ function calcValor(){
   var total=fonpaz+art+oxi+conv+adic-lib;
   document.getElementById('c-vfin').value=total>0?total:0;
 }
+
+function limpiarForm(){
   ['c-no','c-conv','c-obj','c-fsus','c-dur','c-fini','c-fteri','c-pror','c-fterf','c-vini','c-lib','c-vfin','c-sup','c-avf','c-ave','c-mun','c-ap-fonpaz','c-ap-art','c-ap-oxi','c-ap-conv','c-adic'].forEach(function(id){var e=document.getElementById(id);if(e)e.value='';});
   document.getElementById('edit-id').value='';
   document.getElementById('form-tit').textContent='Nuevo Convenio';
@@ -1150,6 +1152,7 @@ function adminAccesoModulos(){
   // Admin entra al selector de línea sin necesidad de clave
   document.getElementById('p-lineas').dataset.adminMode='1';
   mostrarPant('p-lineas');
+}
 function resetD(){LINEA_ACTIVA='';FUNCIONARIO='';M7={est:null,convId:null,conv:null};M8={est:null};M9={est:null,convId:null,conv:null};ANEXOS={};document.getElementById('p-lineas').dataset.adminMode='';}
 function nuevoReg(){resetD();irPaso(1);}
 function toast(m){var t=document.getElementById('toast');t.textContent=m;t.className='toast on';setTimeout(function(){t.classList.remove('on');},2600);}
@@ -1158,4 +1161,3 @@ ini();
 </script>
 </body>
 </html>
-
