@@ -406,7 +406,7 @@ img{display:block;max-width:100%}
       <div class="sec-b">
         <div class="adm-tabs">
           <button class="at on" onclick="aTab('ta-convs',this)">📋 Convenios</button>
-          <button class="at" onclick="aTab('ta-nuevo',this)">➕ Nuevo</button>
+          <button class="at" onclick="limpiarForm();aTab('ta-nuevo',this)">➕ Nuevo</button>
           <button class="at" onclick="aTab('ta-claves',this)">🔑 Claves</button>
           <button class="at" onclick="aTab('ta-regs',this)">📄 Registros</button>
           <button class="at" onclick="aTab('ta-inf',this)">📊 Informes</button>
@@ -998,7 +998,12 @@ function guardarConv(){
   var eid=document.getElementById('edit-id').value;
   toast('Guardando...');
   var prom=eid?db.collection(CC).doc(eid).update(data):db.collection(CC).add(data);
-  prom.then(function(){toast('Convenio guardado ✓');limpiarForm();aTab('ta-convs',document.querySelectorAll('.at')[0]);}).catch(function(e){toast('Error: '+e.message);});
+  prom.then(function(){
+    limpiarForm();
+    toast('Convenio guardado ✓ — Listo para el siguiente');
+    // Queda en el mismo formulario listo para el siguiente convenio
+    document.getElementById('form-tit').textContent='Nuevo Convenio';
+  }).catch(function(e){toast('Error: '+e.message);});
 }
 
 function calcValor(){
@@ -1013,12 +1018,18 @@ function calcValor(){
 }
 
 function limpiarForm(){
-  ['c-no','c-conv','c-obj','c-fsus','c-dur','c-fini','c-fteri','c-pror','c-fterf','c-vini','c-lib','c-vfin','c-sup','c-avf','c-ave','c-mun','c-ap-fonpaz','c-ap-art','c-ap-oxi','c-ap-conv','c-adic'].forEach(function(id){var e=document.getElementById(id);if(e)e.value='';});
+  ['c-no','c-conv','c-obj','c-fsus','c-dur','c-fini','c-fteri','c-pror','c-fterf','c-vini','c-lib','c-vfin','c-sup','c-avf','c-ave','c-mun','c-ap-fonpaz','c-ap-art','c-ap-oxi','c-ap-conv','c-adic'].forEach(function(id){
+    var e=document.getElementById(id);
+    if(e){e.value='';e.removeAttribute('readonly');}
+  });
   document.getElementById('edit-id').value='';
   document.getElementById('form-tit').textContent='Nuevo Convenio';
   document.getElementById('c-est').value='ejecucion';
   document.getElementById('c-lin').value='';
   document.getElementById('c-fuente').value='';
+  // Restaurar readonly en valor final
+  var vf=document.getElementById('c-vfin');
+  if(vf) vf.setAttribute('readonly','true');
 }
 
 function editConv(id){
